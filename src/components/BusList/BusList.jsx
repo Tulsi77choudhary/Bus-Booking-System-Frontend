@@ -52,7 +52,7 @@ export default function BusList({ from, to, date }) {
   if (error) return <p className="text-red-500 text-xl">{error}</p>;
 
   return (
-    <div className="bg-opacity-100 p-4 sm:p-6 rounded-xl shadow-xl w-full max-w-xl mx-auto border border-gray-300">
+    <div className="bg-opacity-100 p-4 sm:p-6 rounded-xl shadow-xl w-full max-w-xl mx-auto border border-gray-300 max-h-[60vh] sm:max-h-[500px]  overflow-y-auto">
       <h2 className="text-3xl font-bold text-orange-500 text-center mb-4">
         Available Buses
       </h2>
@@ -63,14 +63,14 @@ export default function BusList({ from, to, date }) {
         </p>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-4 grid grid-cols-1 gap-4">
         {buses.map((bus, index) => (
           <div
             key={index}
             onClick={() => handleOpenSeatModel(bus)}   
             className="border p-4 bg-gray-10 rounded-xl shadow cursor-pointer hover:bg-black-50 transition"
           >
-            <h3 className="flex justify-between text-xl font-semibold mt-3 text-gray-100">
+            <h3 className=" flex justify-between text-xl font-semibold mt-3 text-gray-100">
               <span>{bus.busNumber}</span>
               <span>₹{bus.price || 500}</span>
             </h3>

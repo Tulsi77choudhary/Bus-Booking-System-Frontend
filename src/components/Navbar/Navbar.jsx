@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-    <nav className="bg-blue-600 text-white p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+    <nav className="bg-blue-600 text-white p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 overflow-x-auto">
       {/* Logo */}
       <h1 className="text-2xl font-bold">Bus Booking</h1>
 

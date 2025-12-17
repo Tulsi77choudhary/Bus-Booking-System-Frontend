@@ -2,7 +2,7 @@ import React from "react";
 
 function PassengerDetail({ selectedSeats }) {
   return (
-    <div>
+    <div className="p-0">
       <h2>Passenger Details</h2>
 
       {selectedSeats.length === 0 ? (

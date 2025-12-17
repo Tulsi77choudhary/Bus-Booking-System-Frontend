@@ -33,7 +33,7 @@ export const searchBuses = (searchData) => async (dispatch) => {
     const buses = response.data;
 
     dispatch({ type: BUS_SEARCH_SUCCESS, payload: buses });
-    console.log("Searched buses:", buses);
+    console.log("Searched bus:", buses);
   } catch (error) {
     dispatch({ type: BUS_SEARCH_FAIL, payload: error.response?.data || error.message });
   }
