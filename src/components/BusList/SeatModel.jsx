@@ -3,7 +3,7 @@ import { Modal, Box, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import PassengerDetail from "../PassengerDetail/PassengerDetail";
 import ReviewBooking from "../ReviewBooking/ReviewBooking";
-import { fetchSeatsByBus, selectSeats } from "../../State/Seats/Action";
+import { getSeatsByBus, selectSeats } from "../../State/Seats/Action";
 
 export default function SeatModel({ open, handleClose, busNumber }) {
 
@@ -17,9 +17,11 @@ export default function SeatModel({ open, handleClose, busNumber }) {
   // 🔥 LOAD SEATS WHEN MODAL OPENS
   useEffect(() => {
     if (open && busNumber) {
-      dispatch(fetchSeatsByBus(busNumber));
+      dispatch(getSeatsByBus(busNumber));
     }
   }, [open, busNumber, dispatch]);
+
+  console.log("Seats for selected bus 👉", seats);
 
   const toggleSeat = (seatNumber, available) => {
     if (!available) return;

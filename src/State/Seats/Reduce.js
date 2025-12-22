@@ -1,4 +1,7 @@
 import {
+  BUS_SEAT_FETCH_REQUEST,
+  BUS_SEAT_FETCH_SUCCESS,
+  BUS_SEAT_FETCH_FAIL,
   BUS_SEAT_SELECTION_REQUEST,
   BUS_SEAT_SELECTION_SUCCESS,
   BUS_SEAT_SELECTION_FAIL
@@ -13,12 +16,21 @@ const initialState = {
 export const seatReducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case BUS_SEAT_SELECTION_REQUEST:
+    case BUS_SEAT_FETCH_REQUEST:
+      return { ...state, loading: true };
+
+    case BUS_SEAT_FETCH_SUCCESS:
       return {
         ...state,
-        loading: true,
-        error: null
+        loading: false,
+        seats: action.payload   
       };
+
+    case BUS_SEAT_FETCH_FAIL:
+      return { ...state, loading: false, error: action.payload };
+
+    case BUS_SEAT_SELECTION_REQUEST:
+      return { ...state, loading: true };
 
     case BUS_SEAT_SELECTION_SUCCESS:
       return {
@@ -28,11 +40,7 @@ export const seatReducer = (state = initialState, action) => {
       };
 
     case BUS_SEAT_SELECTION_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload
-      };
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;
