@@ -111,7 +111,7 @@ export default function BusList({ from, to, date }) {
       <SeatModel
         open={seatModalOpen}
         handleClose={handleCloseSeatModel}
-        bus={selectedBus}
+        bus={selectedBus?.busNumber}
       />
     </div>
   );

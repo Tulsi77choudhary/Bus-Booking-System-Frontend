@@ -30,8 +30,8 @@ export default function MainCarousel() {
   return (
 
     <>
-      <div className="min-h-screen bg-gradient-to-r from-blue-400 to-purple-500 p-4 flex justify-center items-start"
-      // style={{backgroundImage: `url(${bus})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
+      <div className="min-h-screen bg-gradient-to-r from-white to-purple-500 p-4 flex justify-center items-start"
+       // style={{backgroundImage: `url(${bus})`, backgroundSize: 'cover', backgroundPosition: 'center'}}
       >
 
         {/* SEARCH AREA */}
@@ -39,19 +39,19 @@ export default function MainCarousel() {
           <div>
 
             {/* Title */}
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 text-center">
-              Book Your Bus Tickets
+            <h2 className="text-6xl sm:text-5xl font-extrabold text-white text-center mt-40">
+              Book Your  Tickets
             </h2>
 
             {/* Responsive Inputs */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-18 ">
 
               <input
                 type="text"
                 placeholder="From (City)"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
-                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-white outline-none"
               />
               
               <input
@@ -59,14 +59,14 @@ export default function MainCarousel() {
                 placeholder="To (City)"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
-                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-white outline-none"
               />
 
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-blue-500 outline-none"
+                className="p-3 border rounded-xl text-base focus:ring-2 focus:ring-white outline-none"
               />
 
               {/* Button always full-width on small screens */}

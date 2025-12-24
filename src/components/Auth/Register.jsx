@@ -29,7 +29,7 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <div className="">
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {/* FIRST NAME */}
@@ -125,7 +125,7 @@ export default function Register() {
         <div className="py-3 flex items-center">
           <p>Already have an account ?</p>
           <Button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
             className="ml-5"
             size="small"
           >

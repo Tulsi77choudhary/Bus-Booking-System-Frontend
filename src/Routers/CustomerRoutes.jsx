@@ -6,7 +6,7 @@ import Footer from "../components/Footer/Footer.jsx";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import BusList from "../components/BusList/BusList.jsx";
 import BusDetails from "../components/BusList/BusDetails.jsx";
-
+import SeatModel from "../components/BusList/SeatModel.jsx";
 
 export const CustomerRouters = () => {
   return (
@@ -16,10 +16,11 @@ export const CustomerRouters = () => {
       </div>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/Register" element={<Register />} />
 
         <Route path="/" element={<HomePage/>}/>
         <Route path="/BusList" element={<BusList/>}></Route>
+        <Route path="/seats/:busNumber" element={<SeatModel />} />
         <Route path="/BusDetails" element={<BusDetails/>}></Route>
       </Routes>
       <div>
