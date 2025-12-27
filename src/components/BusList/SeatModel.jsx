@@ -1,125 +1,157 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Box, Button } from "@mui/material";
+import { Modal, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import PassengerDetail from "../PassengerDetail/PassengerDetail";
 import ReviewBooking from "../ReviewBooking/ReviewBooking";
 import { getSeatsByBus, selectSeats } from "../../State/Seats/Action";
-import { TOGGLE_SEAT } from "../../State/Seats/ActionType";
 
 export default function SeatModel({ open, handleClose, bus }) {
   const dispatch = useDispatch();
-  const { seats, loading, selectedSeats } = useSelector(state => state.seat);
+  const { seats, loading, selectedSeats } = useSelector(
+    (state) => state.seat
+  );
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openPassenger, setOpenPassenger] = useState(false);
   const [openReview, setOpenReview] = useState(false);
-  
 
   useEffect(() => {
     if (open && bus) {
-      console.log("Bus Number received 👉", bus);
-
       dispatch(getSeatsByBus(bus));
-
     }
   }, [open, bus, dispatch]);
 
-  const toggleSeat = (seat) => {
+  const handleSeatClick = async (seat) => {
     if (!seat.available) return;
 
-    dispatch({
-      type: TOGGLE_SEAT,
-      payload: seat
-    });
+    try {
+      dispatch(selectSeats(bus, [seat])); 
+    } catch (error) {
+      console.error("Seat selection failed:", error);
+    }
   };
 
-  // ---------------- CONFIRM SEATS ----------------
   const handleConfirm = () => {
     if (selectedSeats.length === 0) {
       alert("Please select at least one seat");
       return;
     }
-    dispatch(selectSeats(bus, selectedSeats));
-    setOpenModal(true);
+    setOpenPassenger(true);
   };
 
   return (
     <>
-      {/* ---------------- SEAT SELECTION ---------------- */}
+      {/* ================= SEAT SELECTION ================= */}
       <Modal open={open} onClose={handleClose}>
-        <Box className="bg-white p-4 rounded-xl shadow-xl w-[90%] max-w-[450px] mx-auto mt-8">
-          <h2 className="text-xl font-semibold mb-4 text-center">Select Your Seats</h2>
+        <div className="fixed inset-0 flex items-center justify-center p-3 bg-black/40">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-xl
+                    w-full max-w-md border border-gray-300
+                    max-h-[70vh] sm:max-h-[500px]
+                    overflow-y-auto">
 
-          {loading && <p className="text-center">Loading seats...</p>}
+            <h2 className="text-xl sm:text-2xl font-semibold text-center mb-4">
+              Select Your Seats
+            </h2>
 
-          <div className="grid grid-cols-5 gap-3 justify-center mb-5">
-            {Array.isArray(seats) && seats.length > 0 ? (
-              seats.map((seat, index) => {
-                if ((index + 1) % 5 === 3) return <div key={index} />;
+            <h3 className="sm:text-lg font-semibold text-right mb-4 pr-4">
+              Driver
+            </h3>
 
-                const isSelected = selectedSeats.some(s => s.seatNumber === seat.seatNumber);
+            {loading && <p className="text-center">Loading seats...</p>}
 
-                return (
-                  <div
-                    key={seat.seatNumber}
-                    onClick={() => toggleSeat(seat)}
-                    className={`w-10 h-10 flex items-center justify-center
-                      rounded-lg cursor-pointer text-sm transition-all
-                      ${!seat.available
-                        ? "bg-red-500 text-white cursor-not-allowed"
-                        : isSelected
-                          ? "bg-blue-600 text-white scale-105"
-                          : "bg-green-500 text-white hover:bg-green-600"
-                      }`}
-                  >
-                    {seat.seatNumber}
-                  </div>
-                );
-              })
-            ) : (
-              !loading && <p className="col-span-5 text-center text-gray-600">No seats available</p>
-            )}
+            {/* Seats Grid */}
+            <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 mb-5 justify-center">
+              {Array.isArray(seats) && seats.length > 0 ? (
+                seats.map((seat, index) => {
+                  if ((index + 1) % 5 === 3) return <div key={index} />;
+
+                  const isSelected = selectedSeats.some(
+                    (s) => s.seatNumber === seat.seatNumber
+                  );
+
+                  return (
+                    <div
+                      key={seat.seatNumber}
+                      onClick={() => handleSeatClick(seat)}
+                      className={`
+                        w-9 h-9 sm:w-12 sm:h-12
+                        flex items-center justify-center
+                        rounded-md text-xs sm:text-sm font-semibold
+                        cursor-pointer transition-all
+                        ${!seat.available
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : isSelected
+                            ? "bg-blue-600 text-white scale-110 ring-2 ring-blue-300"
+                            : "bg-green-500 text-white hover:bg-green-600"
+                        }
+                      `}
+                    >
+                      {seat.seatNumber}
+                    </div>
+                  );
+                })
+              ) : (
+                !loading && (
+                  <p className="col-span-5 text-center text-gray-600">
+                    No seats available
+                  </p>
+                )
+              )}
+            </div>
+
+            {/* Summary */}
+            <div className="text-sm mb-4">
+              <p>
+                <b>Selected:</b>{" "}
+                {selectedSeats.map((s) => s.seatNumber).join(", ") || "None"}
+              </p>
+              <p>
+                <b>Total Fare:</b> ₹{selectedSeats.length * 500}
+              </p>
+            </div>
+
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleConfirm}
+              className="!bg-blue-600 hover:!bg-blue-700 !py-3"
+            >
+              Confirm Seats
+            </Button>
+
           </div>
-
-          <div className="text-sm mb-3">
-            <p><b>Selected:</b> {selectedSeats.map(s => s.seatNumber).join(", ") || "None"}</p>
-            <p><b>Total Fare:</b> ₹{selectedSeats.length * 500}</p>
-          </div>
-
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleConfirm}
-            className="!bg-blue-600 hover:!bg-blue-700 !py-3"
-          >
-            Confirm Seats
-          </Button>
-        </Box>
+        </div>
       </Modal>
 
-      {/* ---------------- PASSENGER DETAILS ---------------- */}
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
-        <Box className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-[450px] mx-auto mt-10">
-          <PassengerDetail selectedSeats={selectedSeats} />
+      {/* ================= PASSENGER DETAILS ================= */}
+      <Modal open={openPassenger} onClose={() => setOpenPassenger(false)}>
+        <div className="fixed inset-0 flex items-center justify-center p-3 bg-black/40">
+          <div className="bg-white w-full max-w-md rounded-xl shadow-xl
+                          max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+            <PassengerDetail selectedSeats={selectedSeats} />
 
-          <Button
-            fullWidth
-            variant="contained"
-            className="mt-4"
-            onClick={() => {
-              setOpenModal(false);
-              setOpenReview(true);
-            }}
-          >
-            Next
-          </Button>
-        </Box>
+            <Button
+              fullWidth
+              variant="contained"
+              className="mt-4"
+              onClick={() => {
+                setOpenPassenger(false);
+                setOpenReview(true);
+              }}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
       </Modal>
 
-      {/* ---------------- REVIEW ---------------- */}
+      {/* ================= REVIEW BOOKING ================= */}
       <Modal open={openReview} onClose={() => setOpenReview(false)}>
-        <Box className="bg-white p-6 rounded-xl shadow-xl w-[90%] max-w-[450px] mx-auto mt-10">
-          <ReviewBooking selectedSeats={selectedSeats} />
-        </Box>
+        <div className="fixed inset-0 flex items-center justify-center p-3 bg-black/40">
+          <div className="bg-white w-full max-w-md rounded-xl shadow-xl
+                          max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+            <ReviewBooking selectedSeats={selectedSeats} />
+          </div>
+        </div>
       </Modal>
     </>
   );

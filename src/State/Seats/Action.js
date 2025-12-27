@@ -24,13 +24,13 @@ export const selectSeats = (busNumber, selectedSeats) => async (dispatch) => {
 
     dispatch({
       type: BUS_SEAT_SELECTION_SUCCESS,
-      payload: data   // 👈 LIST of seats
+      payload: data   
     });
 
   } catch (error) {
     dispatch({
       type: BUS_SEAT_SELECTION_FAIL,
-      payload: error.response?.data || error.message
+      payload: error.data || error.message
     });
   }
 };
