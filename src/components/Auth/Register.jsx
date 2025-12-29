@@ -1,17 +1,22 @@
-import React from "react";
+import { useEffect } from "react";
+import { useDispatch,useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { register } from "../../State/Action/Action";
-
-import { Grid, TextField, Button, MenuItem } from "@mui/material";
 
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/"); 
+    }
+  }, [auth.user, navigate]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const data = new FormData(e.currentTarget);
 
     const userData = {
@@ -20,119 +25,99 @@ export default function Register() {
       email: data.get("email"),
       password: data.get("password"),
       phone: data.get("phone"),
-      role: data.get("role")  
+      role: data.get("role"),
     };
-
-    console.log("Register Payload:", userData);
 
     dispatch(register(userData));
   };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          {/* FIRST NAME */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="firstName"
-              name="firstName"
-              label="First Name"
-              fullWidth
-            />
-          </Grid>
+    <div className="flex min-h-full flex-col justify-center px-6 py-2 lg:px-8 bg-gray-900 border border-gray-700 rounded-lg shadow-lg mt-10">
+      {/* Logo + Heading */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        
+        <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-white">
+          Create your account
+        </h2>
+      </div>
 
-          {/* LAST NAME */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="lastName"
-              name="lastName"
-              label="Last Name"
-              fullWidth
-            />
-          </Grid>
+      {/* Form */}
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-          {/* EMAIL */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="email"
-              name="email"
-              label="Email"
-              fullWidth
-              autoComplete="email"
-            />
-          </Grid>
+          {/* First Name */}
+          <input
+            name="firstName"
+            required
+            placeholder="First Name"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
+          />
 
-          {/* PASSWORD */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              fullWidth
-            />
-          </Grid>
+          {/* Last Name */}
+          <input
+            name="lastName"
+            required
+            placeholder="Last Name"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
+          />
 
-          {/* PHONE */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="phone"
-              name="phone"
-              label="Phone Number"
-              fullWidth
-            />
-          </Grid>
+          {/* Email */}
+          <input
+            name="email"
+            type="email"
+            required
+            placeholder="Email address"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
+          />
 
-          {/* ROLE SELECT */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              select
-              required
-              id="role"
-              name="role"
-              label="Role"
-              fullWidth
-              defaultValue="USER"
-            >
-              <MenuItem value="USER">User</MenuItem>
-              <MenuItem value="ADMIN">Admin</MenuItem>
-            </TextField>
-          </Grid>
+          {/* Password */}
+          <input
+            name="password"
+            type="password"
+            required
+            placeholder="Password"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
+          />
 
-          {/* SUBMIT BUTTON */}
-          <Grid item xs={12}>
-            <Button
-              className="bg-[#9155FD] w-full"
-              type="submit"
-              variant="contained"
-              size="large"
-              sx={{ padding: ".8rem 0", bgcolor: "#9155FD" }}
-            >
-              Register
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+          {/* Phone */}
+          <input
+            name="phone"
+            required
+            placeholder="Phone Number"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
+          />
 
-      {/* LOGIN REDIRECT */}
-      <div className="flex justify-center flex-col items-center">
-        <div className="py-3 flex items-center">
-          <p>Already have an account ?</p>
-          <Button
-            onClick={() => navigate("/")}
-            className="ml-5"
-            size="small"
+          {/* Role */}
+          <select
+            name="role"
+            defaultValue="USER"
+            className="w-full rounded-md bg-white/5 px-3 py-2 text-white outline outline-1 outline-white/10 focus:outline-indigo-500"
           >
-            Login
-          </Button>
-        </div>
+            <option value="USER" className="bg-gray-900">User</option>
+            <option value="ADMIN" className="bg-gray-900">Admin</option>
+          </select>
+
+          {/* Register Button */}
+          <button
+            type="submit"
+            className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-400"
+          >
+            Register
+          </button>
+        </form>
+
+        {/* Login Redirect */}
+        <p className="mt-6 text-center text-sm text-gray-400">
+          Already have an account?{" "}
+          <span
+            onClick={() => navigate("/")}
+            className="font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer"
+          >
+            Sign in
+          </span>
+        </p>
       </div>
     </div>
   );
 }
+

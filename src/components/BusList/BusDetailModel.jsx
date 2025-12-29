@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Modal } from "@mui/material";
-import SeatModel from "./SeatModel";
 
 const style = {
   position: "absolute",
