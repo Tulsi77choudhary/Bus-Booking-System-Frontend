@@ -1,52 +1,69 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function PassengerDetail({ selectedSeats }) {
+function PassengerDetail() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // ✅ get data from navigation state
+  const { seats = [], busNumber } = location.state || {};
+
+  if (!seats.length) {
+    return (
+      <div className="p-4">
+        <h2 className="text-xl font-semibold mb-3">Passenger Details</h2>
+        <p>No seats selected</p>
+
+        <button
+          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded"
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-0">
+    <div className="p-4">
       <h2 className="text-xl font-semibold mb-3">Passenger Details</h2>
 
-      {selectedSeats.length === 0 ? (
-        <p>No seats selected</p>
-      ) : (
-        <div>
-          {/* ✅ show seat numbers correctly */}
-          <h3 className="mt-2 mb-3 text-lg font-semibold">
-            Selected Seats:{" "}
-            {selectedSeats.map(s => s.seatNumber).join(", ")}
-          </h3>
+      {/* ✅ Show selected seat numbers */}
+      <h3 className="mb-4 font-semibold">
+        Bus: {busNumber} <br />
+        Selected Seats: {seats.join(", ")}
+      </h3>
 
-          {/* ✅ loop correctly over seat objects */}
-          {selectedSeats.map((seat) => (
-            <div
-              key={seat.seatNumber}
-              className="border p-3 rounded mb-3"
-            >
-              <h4 className="font-semibold mb-2">
-                Passenger for Seat {seat.seatNumber}
-              </h4>
+      {/* ✅ Loop seats correctly */}
+      {seats.map((seatNumber) => (
+        <div
+          key={seatNumber}
+          className="border p-3 rounded mb-3"
+        >
+          <h4 className="font-semibold mb-2">
+            Passenger for Seat {seatNumber}
+          </h4>
 
-              <input
-                type="text"
-                placeholder="Name"
-                className="border p-2 w-full my-1"
-              />
+          <input
+            type="text"
+            placeholder="Name"
+            className="border p-2 w-full my-1"
+          />
 
-              <input
-                type="number"
-                placeholder="Age"
-                className="border p-2 w-full my-1"
-              />
+          <input
+            type="number"
+            placeholder="Age"
+            className="border p-2 w-full my-1"
+          />
 
-              <select className="border p-2 w-full my-1">
-                <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </select>
-            </div>
-          ))}
+          <select className="border p-2 w-full my-1">
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
         </div>
-      )}
+      ))}
     </div>
   );
 }
