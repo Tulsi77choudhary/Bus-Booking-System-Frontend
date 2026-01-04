@@ -20,8 +20,8 @@ export default function SeatPage() {
 
   const [selectedSeatNumbers, setSelectedSeatNumbers] = useState([]);
 
-  useEffect(() => {
-    if (busNumber) {
+    useEffect(() => {
+      if (busNumber) {
       dispatch(getSeatsByBus(busNumber));
     }
   }, [busNumber, dispatch]);
