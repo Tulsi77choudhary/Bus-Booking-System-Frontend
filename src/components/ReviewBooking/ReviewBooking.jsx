@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function ReviewBooking({ bus, passengers }) {
   const [ticketNumber, setTicketNumber] = useState("");

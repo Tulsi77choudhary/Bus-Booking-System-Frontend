@@ -41,7 +41,7 @@ export const getSeatsByBus = (busNumber) => async (dispatch) => {
 
   try {
     const { data } = await axios.get(
-      `${API_BASE_URL}/api/seats/bus/${busNumber}`
+      `${API_BASE_URL}/api/seat/bus/${busNumber}`
     );
     console.log("===", data);
     

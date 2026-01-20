@@ -39,7 +39,7 @@ export const login = (userData) => async (dispatch) => {
 
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: { email: user.email, token, user, id: user.id },
+      payload: { email: user?.email, token, user, id: user?.id },
     });
 
     console.log("Logged in user:", user);
